@@ -20,6 +20,7 @@
                 {% if task.is_urgent == True %}
                 <i class="fas fa-triangle-exclamation red-text accent-4 text"></i>
                 {% endif %}
+                <span class="badge white black-text">{{ task.category.category_name }}</span>
             </div>
             <div class="collapsible-body">
                 <p>{{ task.task_description }}</p>
