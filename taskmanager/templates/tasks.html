@@ -1,5 +1,55 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h3 class="light-blue-text text-darken-4 center-align">Tasks</h3>
+<h3 class="light-blue-text text-darken-4 center-align">Tasks</h3>
+
+<div class="row">
+    <div class="col s12 center-align">
+        <a href="{{ url_for('add_task') }}" class="btn-large blue darken-2">
+            Add Task <i class="fas fa-plus-square right"></i>
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    {% for task in tasks %}
+    <ul class="collapsible popout">
+        <li>
+            <div class="collapsible-header blue darken-4 white-text">
+                <i class="fas fa-caret-down"></i><i class="fas fa-tasks"></i> <strong>{{ task.task_name }}</strong> : {{ task.due_date.strftime(" %d %B, %Y") }}
+                {% if task.is_urgent == True %}
+                <i class="fas fa-triangle-exclamation red-text accent-4 text"></i>
+                {% endif %}
+            </div>
+            <div class="collapsible-body">
+                <p>{{ task.task_description }}</p>
+                <p>Due Date: {{ task.due_date }}</p>
+                <p>Category: {{ task.category.category_name }}</p>
+                <p>Urgent: {{ task.is_urgent }}</p>
+                <div class="row">
+                    <div class="col s6 center-align">
+                        <a href="{{ url_for('edit_task', task_id=task.id) }}" class="btn green accent-4">
+                            Edit
+                        </a>
+                    </div>
+                    <div class="col s6 center-align">
+                        <a href="#modal-{{ task.id }}" class="btn red">Delete</a>
+                    </div>
+                </div>
+            </div>
+        </li>
+        <!-- Modal Structure -->
+        <div id="modal-{{ task.id }}" class="modal">
+            <div class="modal-content">
+                <h4>Confirm Deletion!</h4>
+                <p>Are you sure you wish to delete the task {{ task.task_name }}?</p>
+            </div>
+            <div class="modal-footer">
+                <a href="{{ url_for('delete_task', task_id=task.id) }}" class="modal-close btn red btn-flat">Agree</a>
+                <a href="#!" class="modal-close btn blue">Disagree</a>
+            </div>
+        </div>
+        {% endfor %}
+    </ul>
+</div>
 {% endblock %}
